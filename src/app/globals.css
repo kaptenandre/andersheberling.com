@@ -1,0 +1,154 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    background: #000;
+    color: #fff;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    overscroll-behavior: none;
+  }
+
+  ::selection {
+    background: #fff;
+    color: #000;
+  }
+}
+
+/* ── Homepage snap scroll ── */
+
+.snap-container {
+  height: 100vh;
+  height: 100dvh;
+  overflow-y: scroll;
+  scroll-snap-type: y mandatory;
+  -webkit-overflow-scrolling: touch;
+}
+
+.snap-section {
+  height: 100vh;
+  height: 100dvh;
+  scroll-snap-align: start;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+}
+
+/* ── Media backgrounds ── */
+
+.video-bg {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  min-width: 100%;
+  min-height: 100%;
+  width: auto;
+  height: auto;
+  transform: translate(-50%, -50%);
+  object-fit: cover;
+}
+
+.image-bg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* ── Overlays ── */
+
+.media-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.35);
+  transition: background 0.5s ease;
+}
+
+.group:hover .media-overlay {
+  background: rgba(0, 0, 0, 0.2);
+}
+
+/* ── Typography ── */
+
+.project-title {
+  font-size: clamp(2.5rem, 10vw, 11rem);
+  font-weight: 900;
+  text-transform: uppercase;
+  line-height: 0.88;
+  letter-spacing: -0.03em;
+  color: #fff;
+}
+
+.project-meta {
+  font-size: clamp(0.6rem, 1.1vw, 0.8rem);
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  font-weight: 300;
+}
+
+.site-title {
+  font-size: clamp(0.6rem, 0.9vw, 0.75rem);
+  text-transform: uppercase;
+  letter-spacing: 0.25em;
+  font-weight: 300;
+}
+
+/* ── Scroll indicator ── */
+
+@keyframes scrollPulse {
+  0%, 100% { opacity: 0.3; transform: translateY(0); }
+  50% { opacity: 0.8; transform: translateY(6px); }
+}
+
+.scroll-indicator {
+  animation: scrollPulse 2s ease-in-out infinite;
+}
+
+/* ── Project detail ── */
+
+.detail-title {
+  font-size: clamp(2rem, 8vw, 9rem);
+  font-weight: 900;
+  text-transform: uppercase;
+  line-height: 0.88;
+  letter-spacing: -0.03em;
+}
+
+.detail-description {
+  font-size: clamp(0.9rem, 1.5vw, 1.2rem);
+  font-weight: 300;
+  line-height: 1.6;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+/* ── Back link ── */
+
+.back-link {
+  font-size: clamp(0.6rem, 1vw, 0.75rem);
+  text-transform: uppercase;
+  letter-spacing: 0.25em;
+  font-weight: 300;
+  opacity: 0.5;
+  transition: opacity 0.3s ease;
+  text-decoration: none;
+  color: #fff;
+}
+
+.back-link:hover {
+  opacity: 1;
+}
