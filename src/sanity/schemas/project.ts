@@ -6,19 +6,6 @@ export default defineType({
   type: 'document',
   fields: [
     defineField({
-      name: 'title',
-      title: 'Title',
-      type: 'string',
-      validation: (Rule) => Rule.required(),
-    }),
-    defineField({
-      name: 'slug',
-      title: 'Slug',
-      type: 'slug',
-      options: { source: 'title' },
-      validation: (Rule) => Rule.required(),
-    }),
-    defineField({
       name: 'client',
       title: 'Client',
       type: 'string',
@@ -28,6 +15,14 @@ export default defineType({
       name: 'tour',
       title: 'Tour',
       type: 'string',
+      validation: (Rule) => Rule.required(),
+    }),
+    defineField({
+      name: 'slug',
+      title: 'Slug',
+      type: 'slug',
+      options: { source: 'client' },
+      validation: (Rule) => Rule.required(),
     }),
     defineField({
       name: 'year',
@@ -48,26 +43,14 @@ export default defineType({
       options: { accept: 'video/*' },
     }),
     defineField({
-      name: 'description',
-      title: 'Description',
-      type: 'text',
-    }),
-    defineField({
       name: 'media',
-      title: 'Project Media',
-      description: 'Images and videos for the project breakdown',
+      title: 'Media',
+      description: 'Drop all project images and videos here',
       type: 'array',
       of: [
         defineArrayMember({
           type: 'image',
           options: { hotspot: true },
-          fields: [
-            defineField({
-              name: 'caption',
-              title: 'Caption',
-              type: 'string',
-            }),
-          ],
         }),
         defineArrayMember({
           type: 'object',
@@ -81,16 +64,40 @@ export default defineType({
               options: { accept: 'video/*' },
               validation: (Rule) => Rule.required(),
             }),
+          ],
+          preview: {
+            prepare() {
+              return { title: 'Video' }
+            },
+          },
+        }),
+      ],
+    }),
+    defineField({
+      name: 'credits',
+      title: 'Credits',
+      type: 'array',
+      of: [
+        defineArrayMember({
+          type: 'object',
+          fields: [
             defineField({
-              name: 'caption',
-              title: 'Caption',
+              name: 'role',
+              title: 'Role',
               type: 'string',
+              validation: (Rule) => Rule.required(),
+            }),
+            defineField({
+              name: 'name',
+              title: 'Name',
+              type: 'string',
+              validation: (Rule) => Rule.required(),
             }),
           ],
           preview: {
-            select: { caption: 'caption' },
-            prepare({ caption }) {
-              return { title: caption || 'Video' }
+            select: { role: 'role', name: 'name' },
+            prepare({ role, name }) {
+              return { title: `${role}: ${name}` }
             },
           },
         }),
@@ -111,14 +118,14 @@ export default defineType({
   ],
   preview: {
     select: {
-      title: 'title',
       client: 'client',
+      tour: 'tour',
       media: 'heroImage',
     },
-    prepare({ title, client, media }) {
+    prepare({ client, tour, media }) {
       return {
-        title,
-        subtitle: client,
+        title: client,
+        subtitle: tour,
         media,
       }
     },

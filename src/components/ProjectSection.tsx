@@ -1,33 +1,34 @@
 'use client'
 
 import Link from 'next/link'
+import type { Project } from '@/lib/mockData'
 
-interface Project {
-  _id: string
-  title: string
-  slug: { current: string }
-  client: string
-  tour: string
-  year: string
-  heroImageUrl: string | null
-  heroVideoUrl: string | null
-}
+const GRADIENTS = [
+  'linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 50%, #16213e 100%)',
+  'linear-gradient(135deg, #0a0a0a 0%, #1a0a2e 50%, #2d1b69 100%)',
+  'linear-gradient(135deg, #0a0a0a 0%, #2e1a1a 50%, #4a1a1a 100%)',
+  'linear-gradient(135deg, #0a0a0a 0%, #1a2e1a 50%, #0d3b2e 100%)',
+  'linear-gradient(135deg, #0a0a0a 0%, #2e2e1a 50%, #3d2e0a 100%)',
+]
 
 export default function ProjectSection({
   project,
   isFirst,
-  isLast,
+  index = 0,
 }: {
   project: Project
   isFirst: boolean
   isLast: boolean
+  index?: number
 }) {
+  const gradient = GRADIENTS[index % GRADIENTS.length]
+
   return (
     <section className="snap-section group">
       <Link
         href={`/project/${project.slug.current}`}
         className="absolute inset-0 z-20 cursor-pointer"
-        aria-label={`View ${project.title}`}
+        aria-label={`View ${project.client}`}
       />
 
       {/* Background media */}
@@ -43,11 +44,14 @@ export default function ProjectSection({
       ) : project.heroImageUrl ? (
         <img
           src={project.heroImageUrl}
-          alt={project.title}
+          alt={project.client}
           className="image-bg"
         />
       ) : (
-        <div className="absolute inset-0 bg-neutral-950" />
+        <div
+          className="absolute inset-0"
+          style={{ background: gradient }}
+        />
       )}
 
       {/* Overlay */}
@@ -55,23 +59,13 @@ export default function ProjectSection({
 
       {/* Content */}
       <div className="relative z-10 w-full flex flex-col justify-end p-6 md:p-12 lg:p-16 pb-12 md:pb-16">
-        <div className="mb-6 md:mb-10">
-          <h2 className="project-title">{project.title}</h2>
+        <div className="mb-4 md:mb-6">
+          <p className="project-meta opacity-50 mb-3 md:mb-4">{project.tour}</p>
+          <h2 className="project-title">{project.client}</h2>
         </div>
-        <div className="flex gap-8 md:gap-16 project-meta">
+        <div className="flex gap-8 md:gap-16 project-meta mt-4 md:mt-6">
           <div>
-            <span className="opacity-40 block">Client</span>
-            <p className="mt-1.5">{project.client}</p>
-          </div>
-          {project.tour && (
-            <div>
-              <span className="opacity-40 block">Tour</span>
-              <p className="mt-1.5">{project.tour}</p>
-            </div>
-          )}
-          <div>
-            <span className="opacity-40 block">Year</span>
-            <p className="mt-1.5">{project.year}</p>
+            <span className="opacity-40">{project.year}</span>
           </div>
         </div>
       </div>
