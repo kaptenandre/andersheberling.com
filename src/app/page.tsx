@@ -3,7 +3,7 @@ import { allProjectsQuery } from '@/sanity/lib/queries'
 import ProjectSection from '@/components/ProjectSection'
 import Header from '@/components/Header'
 
-export const revalidate = 60
+export const dynamic = 'force-dynamic'
 
 interface Project {
   _id: string

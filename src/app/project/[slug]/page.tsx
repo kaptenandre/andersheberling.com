@@ -1,10 +1,10 @@
 import { sanityFetch } from '@/sanity/client'
-import { projectBySlugQuery, projectSlugsQuery } from '@/sanity/lib/queries'
+import { projectBySlugQuery } from '@/sanity/lib/queries'
 import ProjectGallery from '@/components/ProjectGallery'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
 
-export const revalidate = 60
+export const dynamic = 'force-dynamic'
 
 interface MediaItem {
   _type: string
@@ -27,11 +27,6 @@ interface Project {
   heroImageUrl: string | null
   heroVideoUrl: string | null
   media: MediaItem[]
-}
-
-export async function generateStaticParams() {
-  const slugs = await sanityFetch<string[]>(projectSlugsQuery)
-  return (slugs || []).map((slug) => ({ slug }))
 }
 
 export default async function ProjectPage({
