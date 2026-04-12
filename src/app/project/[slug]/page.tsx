@@ -1,10 +1,11 @@
-import { sanityFetch } from '@/sanity/client'
+'use client'
+
+import { useEffect, useState } from 'react'
+import { useParams } from 'next/navigation'
+import { client } from '@/sanity/client'
 import { projectBySlugQuery } from '@/sanity/lib/queries'
 import ProjectGallery from '@/components/ProjectGallery'
 import Link from 'next/link'
-import { notFound } from 'next/navigation'
-
-export const dynamic = 'force-dynamic'
 
 interface MediaItem {
   _type: string
@@ -29,22 +30,43 @@ interface Project {
   media: MediaItem[]
 }
 
-export default async function ProjectPage({
-  params,
-}: {
-  params: { slug: string }
-}) {
-  const project = await sanityFetch<Project>(projectBySlugQuery, {
-    slug: params.slug,
-  })
+export default function ProjectPage() {
+  const params = useParams()
+  const slug = params.slug as string
+  const [project, setProject] = useState<Project | null>(null)
+  const [loaded, setLoaded] = useState(false)
+
+  useEffect(() => {
+    client
+      .fetch<Project>(projectBySlugQuery, { slug })
+      .then((data) => setProject(data))
+      .catch(() => setProject(null))
+      .finally(() => setLoaded(true))
+  }, [slug])
+
+  if (!loaded) {
+    return (
+      <main className="bg-black text-white min-h-screen flex items-center justify-center">
+        <h1 className="project-title">Loading</h1>
+      </main>
+    )
+  }
 
   if (!project) {
-    notFound()
+    return (
+      <main className="bg-black text-white min-h-screen flex items-center justify-center">
+        <div className="text-center">
+          <h1 className="detail-title mb-8">Not Found</h1>
+          <Link href="/" className="back-link">
+            &larr; Back to projects
+          </Link>
+        </div>
+      </main>
+    )
   }
 
   return (
     <main className="bg-black text-white min-h-screen">
-      {/* Fixed back button */}
       <Link
         href="/"
         className="fixed top-6 left-6 md:top-8 md:left-8 z-50 back-link mix-blend-difference"
@@ -52,7 +74,6 @@ export default async function ProjectPage({
         &larr; Back
       </Link>
 
-      {/* Hero */}
       <section className="h-screen h-[100dvh] relative flex flex-col justify-end overflow-hidden">
         {project.heroVideoUrl ? (
           <video
@@ -95,19 +116,16 @@ export default async function ProjectPage({
         </div>
       </section>
 
-      {/* Description */}
       {project.description && (
         <section className="px-6 md:px-12 lg:px-16 py-16 md:py-24 lg:py-32">
           <p className="detail-description max-w-5xl">{project.description}</p>
         </section>
       )}
 
-      {/* Media gallery */}
       {project.media && project.media.length > 0 && (
         <ProjectGallery media={project.media} />
       )}
 
-      {/* Footer */}
       <section className="p-6 md:p-12 lg:p-16 py-20 md:py-32">
         <Link href="/" className="back-link">
           &larr; Back to projects

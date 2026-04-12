@@ -1,9 +1,10 @@
-import { sanityFetch } from '@/sanity/client'
+'use client'
+
+import { useEffect, useState } from 'react'
+import { client } from '@/sanity/client'
 import { allProjectsQuery } from '@/sanity/lib/queries'
 import ProjectSection from '@/components/ProjectSection'
 import Header from '@/components/Header'
-
-export const dynamic = 'force-dynamic'
 
 interface Project {
   _id: string
@@ -16,14 +17,29 @@ interface Project {
   heroVideoUrl: string | null
 }
 
-export default async function Home() {
-  const projects: Project[] = await sanityFetch<Project[]>(allProjectsQuery) || []
+export default function Home() {
+  const [projects, setProjects] = useState<Project[]>([])
+  const [loaded, setLoaded] = useState(false)
+
+  useEffect(() => {
+    client
+      .fetch<Project[]>(allProjectsQuery)
+      .then((data) => setProjects(data || []))
+      .catch(() => setProjects([]))
+      .finally(() => setLoaded(true))
+  }, [])
 
   return (
     <>
       <Header />
       <main className="snap-container">
-        {projects.length > 0 ? (
+        {!loaded ? (
+          <section className="snap-section flex items-center justify-center">
+            <div className="text-center">
+              <h1 className="project-title mb-8">Anders<br />Heberling</h1>
+            </div>
+          </section>
+        ) : projects.length > 0 ? (
           projects.map((project, index) => (
             <ProjectSection
               key={project._id}
