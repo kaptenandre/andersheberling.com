@@ -59,14 +59,10 @@ export default function ProjectSection({
 
       {/* Content */}
       <div className="relative z-10 w-full flex flex-col justify-end p-6 md:p-12 lg:p-16 pb-12 md:pb-16">
-        <div className="mb-4 md:mb-6">
-          <p className="project-meta opacity-50 mb-3 md:mb-4">{project.tour}</p>
-          <h2 className="project-title">{project.client}</h2>
-        </div>
-        <div className="flex gap-8 md:gap-16 project-meta mt-4 md:mt-6">
-          <div>
-            <span className="opacity-40">{project.year}</span>
-          </div>
+        <h2 className="project-title">{project.client}</h2>
+        <div className="flex items-center gap-6 md:gap-10 mt-4 md:mt-6 project-meta">
+          <span>{project.tour}</span>
+          <span className="opacity-40">{project.year}</span>
         </div>
       </div>
 
