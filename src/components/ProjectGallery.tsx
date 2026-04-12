@@ -6,7 +6,6 @@ import { galleryImageUrl } from '@/lib/media'
 interface MediaItem {
   _type: string
   _key: string
-  caption?: string
   imageUrl?: string
   imageDimensions?: { width: number; height: number }
   imageLqip?: string
@@ -50,12 +49,18 @@ function AutoplayVideo({ src }: { src: string }) {
 
 export default function ProjectGallery({ media }: { media: MediaItem[] }) {
   return (
-    <div>
-      {media.map((item) => {
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-2 md:gap-3">
+      {media.map((item, i) => {
+        // Every 3rd item spans full width on desktop
+        const isWide = i % 5 === 0
+
         if (item._type === 'image' && item.imageUrl) {
           const optimized = galleryImageUrl(item.imageUrl)
           return (
-            <div key={item._key} className="relative w-full">
+            <div
+              key={item._key}
+              className={isWide ? 'md:col-span-2' : ''}
+            >
               <img
                 src={optimized || item.imageUrl}
                 alt=""
@@ -77,7 +82,10 @@ export default function ProjectGallery({ media }: { media: MediaItem[] }) {
 
         if (item._type === 'video' && item.videoUrl) {
           return (
-            <div key={item._key} className="relative w-full">
+            <div
+              key={item._key}
+              className="md:col-span-2"
+            >
               <AutoplayVideo src={item.videoUrl} />
             </div>
           )

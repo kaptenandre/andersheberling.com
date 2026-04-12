@@ -114,10 +114,27 @@ export default function ProjectPage() {
             </div>
           </section>
 
+          {/* Credits — spec sheet */}
+          {project.credits && project.credits.length > 0 && (
+            <section className="px-6 md:px-12 lg:px-16 py-12 md:py-16 border-b border-white/5">
+              <div className="flex flex-wrap gap-x-12 md:gap-x-20 lg:gap-x-28 gap-y-4">
+                {project.credits.map((credit) => (
+                  <div key={credit._key} className="flex gap-3 items-baseline">
+                    <span className="spec-label">{credit.role}</span>
+                    <span className="spec-value">{credit.name}</span>
+                  </div>
+                ))}
+              </div>
+            </section>
+          )}
+
           {/* Brief */}
-          <section className="px-6 md:px-12 lg:px-16 py-20 md:py-32">
-            <h2 className="project-meta opacity-40 mb-8 md:mb-12">Brief</h2>
-            <p className="detail-description max-w-4xl">
+          <section className="px-6 md:px-12 lg:px-16 py-20 md:py-32 lg:py-40">
+            <h2 className="brief-heading mb-6 md:mb-8">The Vision</h2>
+            <h3 className="brief-subheading mb-10 md:mb-14">
+              An immersive world that dissolves the boundary between artist and audience
+            </h3>
+            <p className="brief-body max-w-4xl">
               Design a fully immersive stage environment for the {project.tour},{' '}
               spanning 24 arena shows across Scandinavia. The concept centers on
               creating a visual world that evolves throughout the set — from
@@ -128,56 +145,27 @@ export default function ProjectPage() {
             </p>
           </section>
 
-          {/* Concept sketches */}
+          {/* Gallery */}
           <section className="px-6 md:px-12 lg:px-16 pb-20 md:pb-32">
-            <h2 className="project-meta opacity-40 mb-8 md:mb-12">Concept</h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
-              <PlaceholderBlock label="Sketch 01" aspect="4/3" />
-              <PlaceholderBlock label="Sketch 02" aspect="4/3" />
-            </div>
-          </section>
-
-          {/* Video */}
-          <section className="pb-2">
             {hasRealMedia ? (
               <ProjectGallery media={project.media} />
             ) : (
-              <div className="px-6 md:px-12 lg:px-16 pb-20 md:pb-32">
-                <h2 className="project-meta opacity-40 mb-8 md:mb-12">Video</h2>
-                <PlaceholderBlock label="Video — Rehearsal Footage" aspect="16/9" />
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-2 md:gap-3">
+                <div className="md:col-span-2">
+                  <PlaceholderBlock label="Video — Rehearsal Footage" aspect="16/9" />
+                </div>
+                <PlaceholderBlock label="Image 01" aspect="3/2" />
+                <PlaceholderBlock label="Image 02" aspect="3/2" />
+                <div className="md:col-span-2">
+                  <PlaceholderBlock label="Image 03 — Wide" aspect="21/9" />
+                </div>
+                <PlaceholderBlock label="Sketch 01" aspect="4/3" />
+                <PlaceholderBlock label="Sketch 02" aspect="4/3" />
+                <PlaceholderBlock label="Image 04" aspect="3/2" />
+                <PlaceholderBlock label="Image 05" aspect="3/2" />
               </div>
             )}
           </section>
-
-          {/* Gallery */}
-          {!hasRealMedia && (
-            <section className="px-6 md:px-12 lg:px-16 pb-20 md:pb-32">
-              <h2 className="project-meta opacity-40 mb-8 md:mb-12">Gallery</h2>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
-                <PlaceholderBlock label="Image 01" aspect="3/2" />
-                <PlaceholderBlock label="Image 02" aspect="3/2" />
-                <PlaceholderBlock label="Image 03" aspect="3/2" />
-                <PlaceholderBlock label="Image 04" aspect="3/2" />
-              </div>
-            </section>
-          )}
-
-          {/* Credits */}
-          {project.credits && project.credits.length > 0 && (
-            <section className="px-6 md:px-12 lg:px-16 py-20 md:py-32 border-t border-white/5">
-              <h2 className="project-meta opacity-40 mb-10 md:mb-16">Credits</h2>
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-16 gap-y-6 md:gap-y-8">
-                {project.credits.map((credit) => (
-                  <div key={credit._key}>
-                    <p className="project-meta opacity-40">{credit.role}</p>
-                    <p className="text-sm md:text-base uppercase tracking-widest font-light mt-1">
-                      {credit.name}
-                    </p>
-                  </div>
-                ))}
-              </div>
-            </section>
-          )}
 
           {/* Footer */}
           <section className="p-6 md:p-12 lg:p-16 py-20 md:py-32 border-t border-white/5">

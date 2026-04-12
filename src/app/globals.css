@@ -2,6 +2,55 @@
 @tailwind components;
 @tailwind utilities;
 
+/* ── GT Canon Font ──
+   Drop your .woff2 files in /public/fonts/ with these names:
+   - GTCanon-Light.woff2
+   - GTCanon-Regular.woff2
+   - GTCanon-Medium.woff2
+   - GTCanon-Bold.woff2
+   - GTCanon-Black.woff2
+*/
+
+@font-face {
+  font-family: 'GT Canon';
+  src: url('/fonts/GTCanon-Light.woff2') format('woff2');
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'GT Canon';
+  src: url('/fonts/GTCanon-Regular.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'GT Canon';
+  src: url('/fonts/GTCanon-Medium.woff2') format('woff2');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'GT Canon';
+  src: url('/fonts/GTCanon-Bold.woff2') format('woff2');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'GT Canon';
+  src: url('/fonts/GTCanon-Black.woff2') format('woff2');
+  font-weight: 900;
+  font-style: normal;
+  font-display: swap;
+}
+
 @layer base {
   * {
     margin: 0;
@@ -14,7 +63,7 @@
   }
 
   body {
-    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-family: 'GT Canon', 'Georgia', 'Times New Roman', serif;
     background: #000;
     color: #fff;
     -webkit-font-smoothing: antialiased;
@@ -82,7 +131,7 @@
   background: rgba(0, 0, 0, 0.2);
 }
 
-/* ── Typography ── */
+/* ── Homepage project titles ── */
 
 .project-title {
   font-size: clamp(2.5rem, 10vw, 11rem);
@@ -93,6 +142,8 @@
   color: #fff;
 }
 
+/* ── Small meta / labels ── */
+
 .project-meta {
   font-size: clamp(0.6rem, 1.1vw, 0.8rem);
   text-transform: uppercase;
@@ -100,11 +151,13 @@
   font-weight: 300;
 }
 
+/* ── Header ── */
+
 .site-title {
   font-size: clamp(0.6rem, 0.9vw, 0.75rem);
   text-transform: uppercase;
   letter-spacing: 0.25em;
-  font-weight: 300;
+  font-weight: 400;
 }
 
 /* ── Scroll indicator ── */
@@ -118,7 +171,7 @@
   animation: scrollPulse 2s ease-in-out infinite;
 }
 
-/* ── Project detail ── */
+/* ── Project detail: title ── */
 
 .detail-title {
   font-size: clamp(2rem, 8vw, 9rem);
@@ -128,12 +181,48 @@
   letter-spacing: -0.03em;
 }
 
-.detail-description {
-  font-size: clamp(0.9rem, 1.5vw, 1.2rem);
-  font-weight: 300;
-  line-height: 1.6;
+/* ── Spec sheet (credits after hero) ── */
+
+.spec-label {
+  font-size: clamp(0.55rem, 0.9vw, 0.7rem);
   text-transform: uppercase;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.15em;
+  font-weight: 300;
+  opacity: 0.35;
+  white-space: nowrap;
+}
+
+.spec-value {
+  font-size: clamp(0.65rem, 1vw, 0.8rem);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  font-weight: 400;
+  white-space: nowrap;
+}
+
+/* ── Brief section ── */
+
+.brief-heading {
+  font-size: clamp(1.8rem, 5vw, 4.5rem);
+  font-weight: 300;
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+}
+
+.brief-subheading {
+  font-size: clamp(1rem, 2.5vw, 2rem);
+  font-weight: 300;
+  line-height: 1.25;
+  letter-spacing: -0.01em;
+  opacity: 0.6;
+}
+
+.brief-body {
+  font-size: clamp(0.85rem, 1.3vw, 1.1rem);
+  font-weight: 300;
+  line-height: 1.7;
+  letter-spacing: 0.01em;
+  opacity: 0.7;
 }
 
 /* ── Back link ── */
