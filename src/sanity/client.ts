@@ -13,8 +13,13 @@ export const client = createClient({
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export async function sanityFetch<T>(query: string, params?: any): Promise<T | null> {
   if (!isConfigured) return null
-  if (params) {
-    return client.fetch<T>(query, params)
+  try {
+    if (params) {
+      return await client.fetch<T>(query, params)
+    }
+    return await client.fetch<T>(query)
+  } catch (e) {
+    console.error('Sanity fetch error:', e)
+    return null
   }
-  return client.fetch<T>(query)
 }
