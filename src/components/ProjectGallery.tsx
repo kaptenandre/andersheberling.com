@@ -1,6 +1,7 @@
 'use client'
 
 import { useRef, useEffect } from 'react'
+import { galleryImageUrl } from '@/lib/media'
 
 interface MediaItem {
   _type: string
@@ -12,7 +13,7 @@ interface MediaItem {
   videoUrl?: string
 }
 
-function AutoplayVideo({ src, caption }: { src: string; caption?: string }) {
+function AutoplayVideo({ src }: { src: string }) {
   const videoRef = useRef<HTMLVideoElement>(null)
 
   useEffect(() => {
@@ -27,7 +28,7 @@ function AutoplayVideo({ src, caption }: { src: string; caption?: string }) {
           video.pause()
         }
       },
-      { threshold: 0.3 }
+      { threshold: 0.2 }
     )
 
     observer.observe(video)
@@ -35,21 +36,15 @@ function AutoplayVideo({ src, caption }: { src: string; caption?: string }) {
   }, [])
 
   return (
-    <div className="relative w-full">
-      <video
-        ref={videoRef}
-        muted
-        loop
-        playsInline
-        className="w-full h-auto block"
-        src={src}
-      />
-      {caption && (
-        <p className="project-meta p-6 md:px-12 lg:px-16 py-4 opacity-40">
-          {caption}
-        </p>
-      )}
-    </div>
+    <video
+      ref={videoRef}
+      muted
+      loop
+      playsInline
+      preload="metadata"
+      className="w-full h-auto block"
+      src={src}
+    />
   )
 }
 
@@ -58,11 +53,12 @@ export default function ProjectGallery({ media }: { media: MediaItem[] }) {
     <div>
       {media.map((item) => {
         if (item._type === 'image' && item.imageUrl) {
+          const optimized = galleryImageUrl(item.imageUrl)
           return (
             <div key={item._key} className="relative w-full">
               <img
-                src={item.imageUrl}
-                alt={item.caption || ''}
+                src={optimized || item.imageUrl}
+                alt=""
                 className="w-full h-auto block"
                 loading="lazy"
                 style={
@@ -70,26 +66,20 @@ export default function ProjectGallery({ media }: { media: MediaItem[] }) {
                     ? {
                         backgroundImage: `url(${item.imageLqip})`,
                         backgroundSize: 'cover',
+                        backgroundRepeat: 'no-repeat',
                       }
                     : undefined
                 }
               />
-              {item.caption && (
-                <p className="project-meta p-6 md:px-12 lg:px-16 py-4 opacity-40">
-                  {item.caption}
-                </p>
-              )}
             </div>
           )
         }
 
         if (item._type === 'video' && item.videoUrl) {
           return (
-            <AutoplayVideo
-              key={item._key}
-              src={item.videoUrl}
-              caption={item.caption}
-            />
+            <div key={item._key} className="relative w-full">
+              <AutoplayVideo src={item.videoUrl} />
+            </div>
           )
         }
 

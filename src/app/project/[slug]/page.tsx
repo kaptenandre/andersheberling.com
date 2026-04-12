@@ -8,6 +8,7 @@ import ProjectGallery from '@/components/ProjectGallery'
 import LoadingBar from '@/components/LoadingBar'
 import Link from 'next/link'
 import { MOCK_PROJECT_DETAILS } from '@/lib/mockData'
+import { heroImageUrl } from '@/lib/media'
 import type { ProjectDetail } from '@/lib/mockData'
 
 const GRADIENTS = [
@@ -90,11 +91,12 @@ export default function ProjectPage() {
                 muted
                 loop
                 playsInline
+                preload="metadata"
                 src={project.heroVideoUrl}
               />
             ) : project.heroImageUrl ? (
               <img
-                src={project.heroImageUrl}
+                src={heroImageUrl(project.heroImageUrl) || project.heroImageUrl}
                 alt={project.client}
                 className="image-bg"
               />
