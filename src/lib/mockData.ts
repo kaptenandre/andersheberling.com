@@ -7,6 +7,7 @@ export interface Project {
   category?: 'stage' | 'commercial'
   heroImageUrl: string | null
   heroVideoUrl: string | null
+  firstGalleryImageUrl?: string | null
 }
 
 export interface ProjectDetail extends Project {

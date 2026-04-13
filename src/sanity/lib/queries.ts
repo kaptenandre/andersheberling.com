@@ -7,7 +7,8 @@ export const allProjectsQuery = `
     year,
     category,
     "heroImageUrl": heroImage.asset->url,
-    "heroVideoUrl": heroVideo.asset->url
+    "heroVideoUrl": heroVideo.asset->url,
+    "firstGalleryImageUrl": media[_type == "image"][0].asset->url
   }
 `
 

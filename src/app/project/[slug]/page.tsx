@@ -52,6 +52,11 @@ export default function ProjectPage() {
   const hasRealMedia = project.media && project.media.length > 0
   const optimizedHero = heroImageUrl(project.heroImageUrl)
   const hasDescription = project.description && project.description.length > 0
+  // Fallback: hero image → first gallery image
+  const firstGalleryImg = hasRealMedia
+    ? project.media.find((m) => m.imageUrl)?.imageUrl
+    : null
+  const fallbackHeroImg = optimizedHero || (firstGalleryImg ? firstGalleryImg + '?w=1600&q=75' : null)
 
   // Fallback text when no Sanity description exists
   const fallbackDescription = (
@@ -83,14 +88,24 @@ export default function ProjectPage() {
         <main>
           {/* Hero */}
           <section className="detail-hero">
-            {project.heroVideoUrl ? (
-              <video autoPlay muted loop playsInline preload="metadata" src={project.heroVideoUrl} />
-            ) : optimizedHero ? (              <img src={optimizedHero} alt={project.client} />
+            {/* Image layer (always shown, fallback for low-power mode) */}
+            {fallbackHeroImg ? (
+              <img src={fallbackHeroImg} alt={project.client} />
             ) : (
               <div style={{
                 position: 'absolute', inset: 0,
                 background: 'linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 50%, #111 100%)',
               }} />
+            )}
+            {/* Video layer on top — won't play in low-power mode */}
+            {project.heroVideoUrl && (
+              <video
+                autoPlay muted loop playsInline
+                preload="metadata"
+                poster={fallbackHeroImg || undefined}
+                src={project.heroVideoUrl}
+                style={{ zIndex: 1 }}
+              />
             )}
             <div className="detail-hero-gradient" />
             <div className="detail-hero-content">

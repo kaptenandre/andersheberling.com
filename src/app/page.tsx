@@ -51,22 +51,20 @@ export default function Home() {
 
   const renderSlide = (project: Project, index: number) => {
     const optimized = heroImageUrl(project.heroImageUrl)
+    // Fallback image: hero image → first gallery image → gradient
+    const fallbackImage = optimized || (project.firstGalleryImageUrl ? project.firstGalleryImageUrl + '?w=1600&q=75' : null)
+
     return (
       <Link
         href={`/project/${project.slug.current}`}
         key={project._id}
         className="project-slide"
-      >        {project.heroVideoUrl ? (
-          <video
-            className="project-slide-bg"
-            autoPlay muted loop playsInline
-            preload="metadata"
-            src={project.heroVideoUrl}
-          />
-        ) : optimized ? (
+      >
+        {/* Always render image underneath as fallback for low-power mode */}
+        {fallbackImage ? (
           <img
             className="project-slide-bg"
-            src={optimized}
+            src={fallbackImage}
             alt={project.client}
             loading="lazy"
           />
@@ -74,6 +72,16 @@ export default function Home() {
           <div
             className="project-slide-bg"
             style={{ background: gradients[index % gradients.length], opacity: 1 }}
+          />
+        )}
+        {/* Video on top — won't autoplay in low-power mode, image shows through */}
+        {project.heroVideoUrl && (
+          <video
+            className="project-slide-bg project-slide-video"
+            autoPlay muted loop playsInline
+            preload="metadata"
+            poster={fallbackImage || undefined}
+            src={project.heroVideoUrl}
           />
         )}
         <div className="project-slide-gradient" />
