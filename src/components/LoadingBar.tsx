@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useCallback } from 'react'
 
 export default function LoadingBar({
   isLoading,
@@ -11,39 +11,48 @@ export default function LoadingBar({
 }) {
   const [progress, setProgress] = useState(0)
   const [visible, setVisible] = useState(true)
+  const [done, setDone] = useState(false)
 
+  // Simulate progress while loading
   useEffect(() => {
-    if (!isLoading && progress < 100) {
-      // Jump to 100 when content is ready
-      setProgress(100)
-      const timeout = setTimeout(() => {
-        setVisible(false)
-        onComplete?.()
-      }, 400)
-      return () => clearTimeout(timeout)
-    }
+    if (!isLoading) return
 
-    if (isLoading) {
-      setVisible(true)
-      setProgress(0)
-      // Simulate progress
-      const intervals = [
-        setTimeout(() => setProgress(12), 100),
-        setTimeout(() => setProgress(28), 300),
-        setTimeout(() => setProgress(45), 600),
-        setTimeout(() => setProgress(62), 1000),
-        setTimeout(() => setProgress(78), 1600),
-        setTimeout(() => setProgress(88), 2400),
-        setTimeout(() => setProgress(94), 3500),
-      ]
-      return () => intervals.forEach(clearTimeout)
-    }
-  }, [isLoading, onComplete, progress])
+    setVisible(true)
+    setProgress(0)
+    setDone(false)
+
+    const steps = [
+      setTimeout(() => setProgress(15), 100),
+      setTimeout(() => setProgress(35), 300),
+      setTimeout(() => setProgress(55), 600),
+      setTimeout(() => setProgress(70), 1000),
+      setTimeout(() => setProgress(85), 1800),
+      setTimeout(() => setProgress(92), 3000),
+    ]
+
+    return () => steps.forEach(clearTimeout)
+  }, [isLoading])
+
+  // When loading finishes, jump to 100 and fade out
+  useEffect(() => {
+    if (isLoading || done) return
+
+    setProgress(100)
+
+    const timer = setTimeout(() => {
+      setVisible(false)
+      setDone(true)
+      onComplete?.()
+    }, 500)
+
+    return () => clearTimeout(timer)
+  }, [isLoading, done, onComplete])
 
   if (!visible) return null
 
   return (
-    <div className="fixed inset-0 z-[100] bg-black flex flex-col items-center justify-center transition-opacity duration-300"
+    <div
+      className="fixed inset-0 z-[100] bg-black flex flex-col items-center justify-center transition-opacity duration-400"
       style={{ opacity: progress >= 100 ? 0 : 1 }}
     >
       <div className="w-48 md:w-64">
