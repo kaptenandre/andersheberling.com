@@ -82,7 +82,7 @@ export default function ProjectSection({
 
       <div className="media-overlay" />
 
-      <div className="relative z-10 w-full flex flex-col justify-end p-6 md:p-12 lg:p-16 pb-12 md:pb-16">
+      <div className="relative z-10 w-full flex flex-col items-center justify-center text-center p-6 md:p-12 lg:p-16 flex-1">
         <h2 className="project-title">{project.client}</h2>
         <div className="flex items-center gap-6 md:gap-10 mt-4 md:mt-6 project-meta">
           <span>{project.tour}</span>

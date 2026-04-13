@@ -65,6 +65,15 @@ export const MOCK_PROJECTS: Project[] = [
     heroImageUrl: null,
     heroVideoUrl: null,
   },
+  {
+    _id: 'mock-5',
+    client: 'Veronica Maggio',
+    tour: 'Festival Shows 2025',
+    slug: { current: 'veronica-maggio-2' },
+    year: '2025',
+    heroImageUrl: null,
+    heroVideoUrl: null,
+  },
 ]
 
 export const MOCK_PROJECT_DETAILS: Record<string, ProjectDetail> = {
@@ -110,6 +119,17 @@ export const MOCK_PROJECT_DETAILS: Record<string, ProjectDetail> = {
       { _key: '3', role: 'Video Design', name: 'Emma Johansson' },
       { _key: '4', role: 'Production Design', name: 'Viktor Lund' },
       { _key: '5', role: 'Scenic Art', name: 'Anna Bergström' },
+    ],
+  },
+  'veronica-maggio-2': {
+    ...MOCK_PROJECTS[4],
+    media: [],
+    credits: [
+      { _key: '1', role: 'Stage Design', name: 'Anders Heberling' },
+      { _key: '2', role: 'Lighting Design', name: 'Patrik Olsson' },
+      { _key: '3', role: 'Creative Director', name: 'Nils Ekberg' },
+      { _key: '4', role: 'Video Design', name: 'Maria Lindqvist' },
+      { _key: '5', role: 'Production Manager', name: 'Lisa Ekström' },
     ],
   },
 }
