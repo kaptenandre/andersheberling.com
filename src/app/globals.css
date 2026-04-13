@@ -2,6 +2,48 @@
 @tailwind components;
 @tailwind utilities;
 
+/* ── GT Canon ── */
+
+@font-face {
+  font-family: 'GT Canon';
+  src: url('/fonts/GTCanon-Light.woff2') format('woff2');
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'GT Canon';
+  src: url('/fonts/GTCanon-Regular.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'GT Canon';
+  src: url('/fonts/GTCanon-Medium.woff2') format('woff2');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'GT Canon';
+  src: url('/fonts/GTCanon-Bold.woff2') format('woff2');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'GT Canon';
+  src: url('/fonts/GTCanon-Black.woff2') format('woff2');
+  font-weight: 900;
+  font-style: normal;
+  font-display: swap;
+}
+
 @layer base {
   * {
     margin: 0;
@@ -14,7 +56,7 @@
   }
 
   body {
-    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-family: 'GT Canon', "Helvetica Neue", Helvetica, Arial, sans-serif;
     background: #000;
     color: #fff;
     -webkit-font-smoothing: antialiased;
