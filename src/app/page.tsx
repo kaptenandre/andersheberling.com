@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState, useCallback } from 'react'
+import { useEffect, useState, useCallback, useRef } from 'react'
 import { client } from '@/sanity/client'
 import { allProjectsQuery } from '@/sanity/lib/queries'
 import Header from '@/components/Header'
@@ -9,6 +9,56 @@ import Link from 'next/link'
 import { MOCK_PROJECTS } from '@/lib/mockData'
 import { heroImageUrl } from '@/lib/media'
 import type { Project } from '@/lib/mockData'
+
+/* ── Lazy Video: only loads & plays when slide enters viewport ── */
+function LazyVideoSlide({ src, eager }: { src: string; eager?: boolean }) {
+  const videoRef = useRef<HTMLVideoElement>(null)
+
+  useEffect(() => {
+    const el = videoRef.current
+    if (!el) return
+
+    // Eager: load immediately
+    if (eager) {
+      el.src = src
+      el.load()
+      el.play().catch(() => {
+        const img = el.parentElement?.querySelector('.project-slide-bg:not(.project-slide-video)') as HTMLElement | null
+        if (img) img.style.opacity = '1'
+        el.style.display = 'none'
+      })
+      return
+    }
+
+    // Lazy: wait until slide is near viewport
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          el.src = src
+          el.load()
+          el.play().catch(() => {
+            const img = el.parentElement?.querySelector('.project-slide-bg:not(.project-slide-video)') as HTMLElement | null
+            if (img) img.style.opacity = '1'
+            el.style.display = 'none'
+          })
+          observer.disconnect()
+        }
+      },
+      { rootMargin: '100%' } // start loading 1 viewport ahead
+    )
+    observer.observe(el)
+    return () => observer.disconnect()
+  }, [src, eager])
+
+  return (
+    <video
+      ref={videoRef}
+      className="project-slide-bg project-slide-video"
+      muted loop playsInline
+      preload="none"
+    />
+  )
+}
 
 export default function Home() {
   const [projects, setProjects] = useState<Project[]>(MOCK_PROJECTS)
@@ -75,21 +125,11 @@ export default function Home() {
             style={{ background: gradients[index % gradients.length], opacity: 1 }}
           />
         )}
-        {/* Video — if autoplay fails (low-power mode), reveal the image underneath */}
+        {/* Video — lazy-loaded via IntersectionObserver, first slide eager */}
         {hasVideo && (
-          <video
-            className="project-slide-bg project-slide-video"
-            autoPlay muted loop playsInline
-            preload="metadata"
+          <LazyVideoSlide
             src={project.heroVideoUrl!}
-            ref={(el) => {
-              if (!el) return
-              const img = el.previousElementSibling as HTMLElement | null
-              el.play().catch(() => {
-                if (img) img.style.opacity = '1'
-                el.style.display = 'none'
-              })
-            }}
+            eager={index === 0}
           />
         )}
         <div className="project-slide-gradient" />
