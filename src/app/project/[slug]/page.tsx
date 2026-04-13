@@ -88,23 +88,34 @@ export default function ProjectPage() {
         <main>
           {/* Hero */}
           <section className="detail-hero">
-            {/* Image layer (always shown, fallback for low-power mode) */}
+            {/* Image: hidden if video exists, revealed on autoplay failure */}
             {fallbackHeroImg ? (
-              <img src={fallbackHeroImg} alt={project.client} />
+              <img
+                src={fallbackHeroImg}
+                alt={project.client}
+                style={project.heroVideoUrl ? { opacity: 0, transition: 'opacity 0.4s ease' } : undefined}
+              />
             ) : (
               <div style={{
                 position: 'absolute', inset: 0,
                 background: 'linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 50%, #111 100%)',
               }} />
             )}
-            {/* Video layer on top — won't play in low-power mode */}
+            {/* Video — on autoplay fail, hide video and show image */}
             {project.heroVideoUrl && (
               <video
                 autoPlay muted loop playsInline
                 preload="metadata"
-                poster={fallbackHeroImg || undefined}
                 src={project.heroVideoUrl}
                 style={{ zIndex: 1 }}
+                ref={(el) => {
+                  if (!el) return
+                  const img = el.previousElementSibling as HTMLElement | null
+                  el.play().catch(() => {
+                    if (img) img.style.opacity = '1'
+                    el.style.display = 'none'
+                  })
+                }}
               />
             )}
             <div className="detail-hero-gradient" />

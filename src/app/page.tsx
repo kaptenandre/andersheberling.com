@@ -51,8 +51,8 @@ export default function Home() {
 
   const renderSlide = (project: Project, index: number) => {
     const optimized = heroImageUrl(project.heroImageUrl)
-    // Fallback image: hero image → first gallery image → gradient
     const fallbackImage = optimized || (project.firstGalleryImageUrl ? project.firstGalleryImageUrl + '?w=1600&q=75' : null)
+    const hasVideo = !!project.heroVideoUrl
 
     return (
       <Link
@@ -60,13 +60,14 @@ export default function Home() {
         key={project._id}
         className="project-slide"
       >
-        {/* Always render image underneath as fallback for low-power mode */}
+        {/* Image: shown immediately if no video, hidden if video exists (revealed on autoplay fail) */}
         {fallbackImage ? (
           <img
             className="project-slide-bg"
             src={fallbackImage}
             alt={project.client}
             loading="lazy"
+            style={hasVideo ? { opacity: 0, transition: 'opacity 0.4s ease' } : undefined}
           />
         ) : (
           <div
@@ -74,14 +75,21 @@ export default function Home() {
             style={{ background: gradients[index % gradients.length], opacity: 1 }}
           />
         )}
-        {/* Video on top — won't autoplay in low-power mode, image shows through */}
-        {project.heroVideoUrl && (
+        {/* Video — if autoplay fails (low-power mode), reveal the image underneath */}
+        {hasVideo && (
           <video
             className="project-slide-bg project-slide-video"
             autoPlay muted loop playsInline
             preload="metadata"
-            poster={fallbackImage || undefined}
-            src={project.heroVideoUrl}
+            src={project.heroVideoUrl!}
+            ref={(el) => {
+              if (!el) return
+              const img = el.previousElementSibling as HTMLElement | null
+              el.play().catch(() => {
+                if (img) img.style.opacity = '1'
+                el.style.display = 'none'
+              })
+            }}
           />
         )}
         <div className="project-slide-gradient" />
