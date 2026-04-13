@@ -1,12 +1,25 @@
+'use client'
+
 import Link from 'next/link'
+import { usePathname } from 'next/navigation'
 
 export default function Header() {
+  const pathname = usePathname()
+  const isHome = pathname === '/'
+
+  // On homepage, clicking logo scrolls to info section
+  // On other pages, clicking logo goes back to homepage
+  const handleClick = (e: React.MouseEvent) => {
+    if (isHome) {
+      e.preventDefault()
+      const el = document.getElementById('info')
+      if (el) el.scrollIntoView({ behavior: 'smooth' })
+    }
+  }
+
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 p-6 md:p-8 flex justify-center items-center mix-blend-difference pointer-events-none">
-      <Link
-        href="/about"
-        className="site-title text-white pointer-events-auto hover:opacity-50 transition-opacity"
-      >
+    <header className="site-header">
+      <Link href="/" className="site-logo" onClick={handleClick}>
         Anders Heberling
       </Link>
     </header>

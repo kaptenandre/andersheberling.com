@@ -13,22 +13,56 @@ export default defineType({
     }),
     defineField({
       name: 'tour',
-      title: 'Tour',
+      title: 'Tour / Project Name',
+      description: 'Required for stage projects, optional for commercial',
       type: 'string',
+    }),
+    defineField({
+      name: 'category',
+      title: 'Category',
+      type: 'string',
+      options: {
+        list: [
+          { title: 'Stage Project', value: 'stage' },
+          { title: 'Commercial Client', value: 'commercial' },
+        ],
+        layout: 'radio',
+      },      initialValue: 'stage',
       validation: (Rule) => Rule.required(),
     }),
     defineField({
       name: 'slug',
       title: 'Slug',
+      description: 'Auto-generated from client name. Optional for commercial-only clients.',
       type: 'slug',
       options: { source: 'client' },
-      validation: (Rule) => Rule.required(),
     }),
     defineField({
       name: 'year',
       title: 'Year',
       type: 'string',
-      validation: (Rule) => Rule.required(),
+    }),
+    defineField({
+      name: 'description',
+      title: 'Case Description',
+      description: 'The main case text — "The Vision" section on the project page',
+      type: 'array',
+      of: [
+        defineArrayMember({
+          type: 'block',
+          styles: [
+            { title: 'Normal', value: 'normal' },
+            { title: 'Heading', value: 'h2' },
+            { title: 'Subheading', value: 'h3' },
+            { title: 'Quote', value: 'blockquote' },
+          ],          marks: {
+            decorators: [
+              { title: 'Bold', value: 'strong' },
+              { title: 'Italic', value: 'em' },
+            ],
+          },
+        }),
+      ],
     }),
     defineField({
       name: 'heroImage',
@@ -51,8 +85,7 @@ export default defineType({
         defineArrayMember({
           type: 'image',
           options: { hotspot: true },
-        }),
-        defineArrayMember({
+        }),        defineArrayMember({
           type: 'object',
           name: 'video',
           title: 'Video',
@@ -82,8 +115,7 @@ export default defineType({
           type: 'object',
           fields: [
             defineField({
-              name: 'role',
-              title: 'Role',
+              name: 'role',              title: 'Role',
               type: 'string',
               validation: (Rule) => Rule.required(),
             }),
@@ -112,20 +144,20 @@ export default defineType({
   orderings: [
     {
       title: 'Display Order',
-      name: 'orderAsc',
-      by: [{ field: 'order', direction: 'asc' }],
+      name: 'orderAsc',      by: [{ field: 'order', direction: 'asc' }],
     },
   ],
   preview: {
     select: {
       client: 'client',
       tour: 'tour',
+      category: 'category',
       media: 'heroImage',
     },
-    prepare({ client, tour, media }) {
+    prepare({ client, tour, category, media }) {
       return {
         title: client,
-        subtitle: tour,
+        subtitle: `${category === 'commercial' ? '🏢' : '🎭'} ${tour || ''}`,
         media,
       }
     },

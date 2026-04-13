@@ -4,6 +4,7 @@ export interface Project {
   tour: string
   slug: { current: string }
   year: string
+  category?: 'stage' | 'commercial'
   heroImageUrl: string | null
   heroVideoUrl: string | null
 }
@@ -11,6 +12,7 @@ export interface Project {
 export interface ProjectDetail extends Project {
   media: MediaItem[]
   credits: Credit[]
+  description?: any[]
 }
 
 export interface MediaItem {
@@ -27,7 +29,6 @@ export interface Credit {
   role: string
   name: string
 }
-
 export const MOCK_PROJECTS: Project[] = [
   {
     _id: 'mock-1',
@@ -35,6 +36,7 @@ export const MOCK_PROJECTS: Project[] = [
     tour: 'Arena Tour 2026',
     slug: { current: 'hakan-hellstrom' },
     year: '2026',
+    category: 'stage',
     heroImageUrl: null,
     heroVideoUrl: null,
   },
@@ -44,6 +46,7 @@ export const MOCK_PROJECTS: Project[] = [
     tour: 'Club Tour 2025',
     slug: { current: 'robyn' },
     year: '2025',
+    category: 'stage',
     heroImageUrl: null,
     heroVideoUrl: null,
   },
@@ -53,24 +56,45 @@ export const MOCK_PROJECTS: Project[] = [
     tour: 'Stadion Tour 2024',
     slug: { current: 'veronica-maggio' },
     year: '2024',
+    category: 'stage',
     heroImageUrl: null,
     heroVideoUrl: null,
-  },
-  {
+  },  {
     _id: 'mock-4',
     client: 'First Aid Kit',
     tour: 'World Tour 2025',
     slug: { current: 'first-aid-kit' },
     year: '2025',
+    category: 'stage',
     heroImageUrl: null,
     heroVideoUrl: null,
   },
   {
     _id: 'mock-5',
-    client: 'Veronica Maggio',
-    tour: 'Festival Shows 2025',
-    slug: { current: 'veronica-maggio-2' },
+    client: 'Volvo',
+    tour: '',
+    slug: { current: '' },
     year: '2025',
+    category: 'commercial',
+    heroImageUrl: null,
+    heroVideoUrl: null,
+  },
+  {
+    _id: 'mock-6',
+    client: 'H&M',
+    tour: '',
+    slug: { current: '' },
+    year: '2024',
+    category: 'commercial',
+    heroImageUrl: null,
+    heroVideoUrl: null,
+  },
+  {
+    _id: 'mock-7',    client: 'Spotify',
+    tour: '',
+    slug: { current: '' },
+    year: '2025',
+    category: 'commercial',
     heroImageUrl: null,
     heroVideoUrl: null,
   },
@@ -96,8 +120,7 @@ export const MOCK_PROJECT_DETAILS: Record<string, ProjectDetail> = {
       { _key: '1', role: 'Stage Design', name: 'Anders Heberling' },
       { _key: '2', role: 'Creative Director', name: 'Sara Forsberg' },
       { _key: '3', role: 'Lighting Design', name: 'Klas Pettersson' },
-      { _key: '4', role: 'Video Design', name: 'Studio Moross' },
-      { _key: '5', role: 'Choreography', name: 'Lydia Wålsten' },
+      { _key: '4', role: 'Video Design', name: 'Studio Moross' },      { _key: '5', role: 'Choreography', name: 'Lydia Wålsten' },
     ],
   },
   'veronica-maggio': {
@@ -119,17 +142,6 @@ export const MOCK_PROJECT_DETAILS: Record<string, ProjectDetail> = {
       { _key: '3', role: 'Video Design', name: 'Emma Johansson' },
       { _key: '4', role: 'Production Design', name: 'Viktor Lund' },
       { _key: '5', role: 'Scenic Art', name: 'Anna Bergström' },
-    ],
-  },
-  'veronica-maggio-2': {
-    ...MOCK_PROJECTS[4],
-    media: [],
-    credits: [
-      { _key: '1', role: 'Stage Design', name: 'Anders Heberling' },
-      { _key: '2', role: 'Lighting Design', name: 'Patrik Olsson' },
-      { _key: '3', role: 'Creative Director', name: 'Nils Ekberg' },
-      { _key: '4', role: 'Video Design', name: 'Maria Lindqvist' },
-      { _key: '5', role: 'Production Manager', name: 'Lisa Ekström' },
     ],
   },
 }

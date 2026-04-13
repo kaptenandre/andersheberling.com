@@ -5,6 +5,7 @@ export const allProjectsQuery = `
     tour,
     slug,
     year,
+    category,
     "heroImageUrl": heroImage.asset->url,
     "heroVideoUrl": heroVideo.asset->url
   }
@@ -17,12 +18,13 @@ export const projectBySlugQuery = `
     tour,
     slug,
     year,
+    category,
+    description,
     "heroImageUrl": heroImage.asset->url,
     "heroVideoUrl": heroVideo.asset->url,
     media[] {
       _type,
-      _key,
-      "imageUrl": asset->url,
+      _key,      "imageUrl": asset->url,
       "imageDimensions": asset->metadata.dimensions,
       "imageLqip": asset->metadata.lqip,
       hotspot,
